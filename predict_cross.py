@@ -202,7 +202,11 @@ def main():
               f"level 1, snapshot {elo.snapshot_date}):")
         print(off.to_string(index=False, float_format=lambda v: f"{v:7.1f}"))
         print("\noffset_vs_bottom = goals an average side of that league is worth against an "
-              "average side of the weakest league listed (the `L` this repo cannot fit).")
+              "average side of the weakest league listed - the `L` this repo cannot fit, stated "
+              "in goals. `extrapolated` marks a gap beyond the +/-400 Elo range the conversion is "
+              "validated over, where it saturates (the supremacy cannot exceed the match's goals).")
+        print("Pricing uses each club's own rating, never these league means; the table is the "
+              "interpretation of what the prior implies, not an input.")
         return
 
     matches = pd.read_csv(OUT / "matches.csv", parse_dates=["date"], dtype={"season": str}) \

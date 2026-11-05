@@ -139,7 +139,7 @@ def league_offsets(elo_table, leagues=None, level=1):
     The offset between leagues A and B is the supremacy an average A side would have over an
     average B side, i.e. `supremacy_from_elo(mean_A - mean_B)` at the pooled goal level.
     """
-    leagues = leagues or sorted(elolib.LEAGUE_COUNTRY)
+    leagues = leagues or sorted(elolib.TOP_FLIGHT)
     rows = []
     for code in leagues:
         country = elolib.LEAGUE_COUNTRY.get(code)
@@ -155,9 +155,12 @@ def league_offsets(elo_table, leagues=None, level=1):
         return pd.DataFrame()
     pooled = LeagueLevel.pooled()
     df = pd.DataFrame(rows).sort_values("mean_elo", ascending=False).reset_index(drop=True)
-    best, worst = df.mean_elo.iloc[0], df.mean_elo.iloc[-1]
+    worst = df.mean_elo.iloc[-1]
     df["offset_vs_bottom"] = [elolib.supremacy_from_elo(e - worst, pooled.total_goals, pooled.rho)
                               for e in df.mean_elo]
+    # the conversion saturates at the match's goal level, so anything past the gated range is a
+    # statement about the ceiling, not a forecast
+    df["extrapolated"] = [abs(e - worst) > MAX_ELO_GAP for e in df.mean_elo]
     return df
 
 

@@ -82,6 +82,12 @@ LEAGUE_COUNTRY = {
     "SVN": "SVN", "BUL": "BUL", "ISR": "ISR", "ARM": "ARM", "CYP": "CYP", "KAZ": "KAZ",
 }
 
+# Top-flight codes only: `league_offsets()` averages a country's level-1 clubs, so E0/E1/E2/E3
+# would all produce the same row. Second tiers are intentionally absent.
+TOP_FLIGHT = {"E0", "SC0", "D1", "I1", "SP1", "F1", "N1", "B1", "P1", "T1", "G1", "AUT", "DNK",
+              "NOR", "POL", "ROU", "RUS", "SWE", "FIN", "IRL", "SWZ", "CZE", "HUN", "UKR", "SRB",
+              "CRO", "SVN", "BUL", "ISR", "ARM", "CYP", "KAZ"}
+
 # ClubElo short name -> the canonical name used in this repo (common.py / out/matches.csv).
 # Only names that do *not* match after normalisation need an entry; the rest resolve by
 # exact match on the normalised key. Keyed by (country, ClubElo name) because ClubElo is
