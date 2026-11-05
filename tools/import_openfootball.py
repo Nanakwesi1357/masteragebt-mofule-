@@ -34,16 +34,22 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common import EXTRA_LEAGUES, MAIN_LEAGUES, RAW, canon, to_ascii  # noqa: E402
 
-# league code -> (openfootball repo dir, file suffix, open-matchday competition folder, label)
+# league code -> where its openfootball archive lives, its file naming, and the
+# open-matchday competition that supplies the running season
 LEAGUES = {
-    # code: (repo dir, file suffix, open-matchday competition, label, calendar-year season?)
-    "BRA": ("brazil", "br1", "BRA_1_serie-a", "Brazil Serie A", True),
-    "ARG": ("argentina", "ar1", "ARG_1_liga-profesional", "Argentina Primera", True),
-    "G1": ("greece", "gr1", "GRE_1_super-league", "Greece Super League", False),
-    "SWZ": ("switzerland", "ch1", "SUI_1_super-league", "Switzerland Super League", False),
-    "ROU": ("romania", "ro1", "ROU_1_liga-1", "Romania Liga 1", False),
+    "BRA": {"repo": "brazil", "dir": "brazil", "suffix": "br1", "comp": "BRA_1_serie-a",
+            "label": "Brazil Serie A", "calendar": True, "seasons": ["2023", "2024", "2025"]},
+    "ARG": {"repo": "brazil", "dir": "argentina", "suffix": "ar1", "comp": "ARG_1_liga-profesional",
+            "label": "Argentina Primera", "calendar": True, "seasons": ["2023", "2024", "2025"]},
+    "G1": {"repo": "europe", "dir": "greece", "suffix": "gr1", "comp": "GRE_1_super-league",
+           "label": "Greece Super League", "calendar": False,
+           "seasons": ["2023-24", "2024-25", "2025-26"]},
+    "SWZ": {"repo": "europe", "dir": "switzerland", "suffix": "ch1", "comp": "SUI_1_super-league",
+            "label": "Switzerland Super League", "calendar": False, "seasons": ["2023-24", "2024-25"]},
+    "ROU": {"repo": "europe", "dir": "romania", "suffix": "ro1", "comp": "ROU_1_liga-1",
+            "label": "Romania Liga 1", "calendar": False, "seasons": ["2023-24", "2024-25"]},
 }
-OF_BASE = "https://raw.githubusercontent.com/openfootball/brazil/master"
+OF_BASE = "https://raw.githubusercontent.com/openfootball/{repo}/master/{dir}/{name}"
 OM_BASE = "https://raw.githubusercontent.com/oladeeayo/open-matchday/main/data"
 
 DATE_LINE = re.compile(r"^\s*[A-Z][a-z]{2} ([A-Z][a-z]{2}) (\d{1,2})(?: (\d{4}))?\s*$")
@@ -136,16 +142,17 @@ def main():
     ap.add_argument("--no-current", action="store_true", help="skip the running season")
     a = ap.parse_args()
 
-    repo_dir, suffix, comp, label, calendar = LEAGUES[a.league]
+    cfg = LEAGUES[a.league]
+    comp, label, calendar = cfg["comp"], cfg["label"], cfg["calendar"]
     current_year = int(a.current)
-    seasons = [str(s) for s in (a.seasons or range(current_year - 3, current_year))]
-    names = a.files or [f"{s}_{suffix}.txt" for s in seasons]
+    seasons = [str(s) for s in (a.seasons or cfg["seasons"])]
+    names = a.files or [f"{s}_{cfg['suffix']}.txt" for s in seasons]
 
     rows = []
     for name in names:
         try:
             text = ((Path(a.src_dir) / name).read_text() if a.src_dir
-                    else fetch(f"{OF_BASE}/{repo_dir}/{name}"))
+                    else fetch(OF_BASE.format(repo=cfg["repo"], dir=cfg["dir"], name=name)))
         except Exception as e:  # noqa: BLE001
             print(f"  {name}: {e}")
             continue

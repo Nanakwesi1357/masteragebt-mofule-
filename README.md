@@ -121,6 +121,24 @@ python tools/import_openfootball.py --league BRA   # Brazil, past seasons + curr
 python tools/import_openfootball.py --league ARG   # Argentina, past seasons + current
 ```
 
+### Rebuilding `raw/` from scratch (one command)
+
+`raw/` and `out/` are generated and gitignored, so a fresh clone, a rebuilt sandbox or a
+wiped workspace has no data behind the code. If football-data.co.uk is unreachable, this
+rebuilds all thirteen leagues from GitHub in about half a minute:
+
+```
+python tools/fetch_public_data.py     # history + running season, standard library only
+python build_matches.py               # -> out/matches.csv
+```
+
+It tries `raw.githubusercontent.com` first and falls back to the GitHub contents API, so it
+also works where only `api.github.com` is allowed. Set `GITHUB_TOKEN` (or have `gh` logged in)
+for the API rate limit - a full rebuild is ~75 requests and the unauthenticated limit is 60/hour.
+Options: `--seasons N` (default 9, counting the running season), `--leagues E0 SP1 G1`,
+`--no-history`, `--no-current`. Verified to reproduce a 31,912-match `out/matches.csv` and
+the same predictions to the decimal.
+
 `import_openfootball.py` merges the openfootball archive (past seasons) with open-matchday
 (running season + its fixtures) into `raw/extra/BRA.csv` / `raw/extra/ARG.csv`. Both write
 latin-1 to match football-data.co.uk's encoding. Club names are left as the source spells
