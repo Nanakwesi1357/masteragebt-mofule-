@@ -33,7 +33,7 @@ from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import RAW  # noqa: E402
+from common import RAW, to_ascii  # noqa: E402
 
 RAW_BASE = "https://raw.githubusercontent.com/oladeeayo/open-matchday/main/data"
 
@@ -41,6 +41,10 @@ RAW_BASE = "https://raw.githubusercontent.com/oladeeayo/open-matchday/main/data"
 COMPETITIONS = {
     "ENG_1_premier-league": "E0",
     "ENG_2_championship": "E1",
+    "ESP_1_la-liga": "SP1",
+    "FRA_1_ligue-1": "F1",
+    "BEL_1_pro-league": "B1",
+    "NED_1_eredivisie": "N1",
 }
 
 COLUMNS = ["Div", "Date", "Time", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "FTR",
@@ -77,8 +81,8 @@ def to_football_data(rows, code):
             "Div": code,
             "Date": f"{d}/{m}/{y}",
             "Time": (r.get("time") or "").strip(),
-            "HomeTeam": (r.get("home") or "").strip(),
-            "AwayTeam": (r.get("away") or "").strip(),
+            "HomeTeam": to_ascii((r.get("home") or "").strip()),
+            "AwayTeam": to_ascii((r.get("away") or "").strip()),
             "FTHG": fth if finished else "",
             "FTAG": fta if finished else "",
             "FTR": ("H" if int(fth) > int(fta) else "D" if fth == fta else "A") if finished else "",

@@ -69,15 +69,38 @@ DixonColes   850   0.2054    1.0064   0.6025   49.1%      -1.8%
 close odds   590   0.1972    0.9739   0.5808   53.9%      -1.2%
 ```
 
-| league | matches | RPS | log loss | accuracy | closing line RPS | note |
-|---|---|---|---|---|---|---|
-| England Premier League (E0) | 850 | 0.2054 | 1.006 | 49.1% | 0.1972 | market available, model ~0.008 worse |
-| Brazil Serie A (BRA) | 716 | 0.2017 | 0.999 | 51.4% | - | no odds in the fallback data |
-| Argentina Primera (ARG) | 714 | 0.2116 | 1.051 | 45.7% | - | split/zonal season format, weakest of the three |
+Libraries of leagues, all fitted by the same code (walk-forward, refit every 14 days,
+2024-08 to 2026-11). RPS is the metric to compare - lower is better, and the closing line is
+the benchmark to beat:
 
-Argentina is the weakest case on purpose: its seasons are split into Apertura/Clausura with
-zones, so a club's fixture list is uneven, and the model over-predicts draws there by ~2.6pp.
-Brazil's large home advantage (x1.40, versus x1.20 in England) is picked up automatically.
+| league | code | matches | RPS | log loss | accuracy | closing line RPS | gap |
+|---|---|---|---|---|---|---|---|
+| Spain La Liga | SP1 | 869 | 0.1979 | 0.975 | 52.4% | 0.1872 | +0.0106 |
+| France Ligue 1 | F1 | 693 | 0.2076 | 0.990 | 53.4% | 0.2012 | +0.0064 |
+| England Premier League | E0 | 850 | 0.2054 | 1.006 | 49.1% | 0.1972 | +0.0082 |
+| Netherlands Eredivisie | N1 | 711 | 0.2002 | 0.995 | 51.9% | 0.1850 | +0.0152 |
+| Belgium Pro League | B1 | 705 | 0.2084 | 1.012 | 49.5% | 0.1951 | +0.0133 |
+| Norway Eliteserien | NOR | 553 | 0.2054 | 0.963 | 54.8% | 0.1930 | +0.0124 |
+| Denmark Superliga | DNK | 450 | 0.2142 | 1.037 | 51.6% | 0.2017 | +0.0125 |
+| Greece Super League | G1 | 360 | 0.2017 | 0.970 | 53.1% | - | no odds in source |
+| Brazil Serie A | BRA | 716 | 0.2017 | 0.999 | 51.4% | - | no odds in source |
+| Romania Liga 1 | ROU | 395 | 0.2022 | 1.018 | 48.6% | - | no odds in source |
+| Argentina Primera | ARG | 714 | 0.2116 | 1.051 | 45.7% | - | no odds in source |
+| Switzerland Super League | SWZ | 287 | 0.2188 | 1.045 | 49.8% | - | 2025-26 season missing |
+
+Read the last column honestly: the model loses to the closing line everywhere, by 0.006 to
+0.015 RPS. That is the expected result for a goals-only model and it is why `predict.py`
+prints an 80% band instead of a confident single number. Argentina and Switzerland are the
+weakest (split/zonal season formats, and for Switzerland one whole season is missing from the
+fallback source).
+
+Home advantage is estimated per league rather than assumed, and it varies a lot: Netherlands
+x1.12, England x1.21, Brazil x1.40, Greece x1.47, Romania x1.48. Assuming a single European
+home edge would misprice every one of those leagues.
+
+Fallback-source gaps worth knowing: Greece, Switzerland and Romania come from openfootball
+plus open-matchday instead of football-data.co.uk, so they have no closing odds (no market
+benchmark) and Switzerland/Romania have no 2025-26 season at all.
 
 The closing line is still better than the model (RPS +0.008, and flat-staking the model's
 disagreements with the close loses a few percent). So: use the probabilities as a structured

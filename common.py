@@ -151,9 +151,108 @@ TEAM_ALIASES = {
     "PSV Eindhoven": ["PSV"], "Ajax": ["Ajax Amsterdam"], "Feyenoord": [], "AZ Alkmaar": ["AZ"],
     "Benfica": ["SL Benfica"], "Porto": ["FC Porto"], "Sporting CP": ["Sporting Lisbon", "Sporting"],
     "Galatasaray": [], "Fenerbahce": [], "Besiktas": [], "Celtic": [], "Rangers": [],
+
+    # ------------------------------------------------------------------ wider Europe
+    # Belgium (football-data short names; open-matchday full names as aliases)
+    "Anderlecht": ["RSC Anderlecht"], "Antwerp": ["Royal Antwerp", "Royal Antwerp FC"],
+    "Beerschot": ["Beerschot VA", "Beerschot Wilrijk"], "Cercle Brugge": ["Cercle Brugge KSV"],
+    "Charleroi": ["Royal Charleroi SC", "Sporting Charleroi"], "Club Brugge": ["Club Brugge KV"],
+    "Dender": ["FCV Dender"], "Eupen": ["KAS Eupen"], "Genk": ["Racing Genk", "KRC Genk"],
+    "Gent": ["KAA Gent", "Ghent"], "Kortrijk": ["KV Kortrijk"], "Mechelen": ["KV Mechelen"],
+    "Westerlo": ["KVC Westerlo"], "Lokeren": ["Sporting Lokeren"], "Lommel SK": ["Lommel"],
+    "Mouscron": ["Royal Excel Mouscron"], "OH Leuven": ["Oud-Heverlee Leuven"],
+    "Oostende": ["KV Oostende"], "RAAL La Louviere": ["La Louviere"],
+    "RWD Molenbeek": ["Molenbeek"], "Seraing": ["RFC Seraing"],
+    "Sint-Truiden": ["Sint-Truidense", "St Truiden", "St. Truiden"],
+    "St. Gilloise": ["Union St.-Gilloise", "Union Saint-Gilloise", "Union SG"],
+    "Standard": ["Standard Liege", "Standard Liège"], "Waasland-Beveren": ["Beveren"],
+    "Zulte-Waregem": ["Waregem"],
+    # Denmark
+    "Aalborg": ["Aalborg BK", "AaB"], "Aarhus": ["AGF", "AGF Aarhus"], "Brondby": ["Brøndby"],
+    "Esbjerg": ["Esbjerg fB"], "FC Copenhagen": ["Copenhagen", "FC Kobenhavn", "Kobenhavn"],
+    "Fredericia": ["FC Fredericia"], "Helsingor": ["FC Helsingor"], "Hobro": ["Hobro IK"],
+    "Horsens": ["AC Horsens"], "Hvidovre IF": ["Hvidovre"], "Lyngby": ["Lyngby BK"],
+    "Midtjylland": ["FC Midtjylland"], "Nordsjaelland": ["FC Nordsjaelland", "Nordsjælland"],
+    "Odense": ["OB", "Odense BK"], "Randers FC": ["Randers"], "Silkeborg": ["Silkeborg IF"],
+    "Sonderjyske": ["Sønderjyske", "SonderjyskE"], "Vejle": ["Vejle BK"], "Vendsyssel": ["Vendsyssel FF"],
+    "Vestsjaelland": ["FC Vestsjaelland"], "Viborg": ["Viborg FF"],
+    # France (extra spellings seen in the other two sources)
+    "Lille": ["LOSC Lille"], "Lens": ["RC Lens"], "Strasbourg": ["RC Strasbourg Alsace"],
+    "Brest": ["Stade Brestois 29"], "Nice": ["OGC Nice"],
+    "Auxerre": ["AJ Auxerre"], "Ajaccio": ["AC Ajaccio"], "Amiens": ["Amiens SC"],
+    "Angers": ["Angers SCO"], "Bordeaux": ["Girondins Bordeaux"], "Caen": ["SM Caen"],
+    "Clermont": ["Clermont Foot"], "Dijon": ["Dijon FCO"], "Troyes": ["Estac Troyes"],
+    "Guingamp": ["EA Guingamp"], "Le Havre": ["Havre Athletic Club"], "Le Mans FC": ["Le Mans"],
+    "Lorient": ["FC Lorient"], "Metz": ["FC Metz"], "Montpellier": ["Montpellier HSC"],
+    "Nantes": ["FC Nantes"], "Nimes": ["Nîmes"], "Paris FC": [], "Reims": ["Stade de Reims"],
+    "Toulouse": ["Toulouse FC"],
+    # Greece
+    "AEK Athens": ["AEK Athen", "AEK"], "Aris": ["Aris Saloniki", "Aris Thessaloniki"],
+    "Asteras Tripolis": ["Asteras Tripoli"], "Atromitos": [], "Kifisia": ["AE Kifisias", "Kifisias"],
+    "Lamia": ["Lamia FC"], "Levadiakos": [], "OFI Crete": ["OFI Heraklion", "OFI"],
+    "Olympiacos": ["Olympiakos Piraeus", "Olympiakos"], "PAOK": ["PAOK Saloniki", "PAOK Thessaloniki"],
+    "PAS Giannina": [], "Panathinaikos": [], "Panetolikos": [], "Panserraikos": [],
+    "Volos NFC": ["Volos"], "AE Larissa": ["Larissa"], "Iraklis": [], "Kalamata": [],
+    "Kallithea": ["GS Kallithea"],
+    # Netherlands
+    "ADO Den Haag": ["Den Haag"], "Almere City": ["Almere City FC"], "Cambuur": ["SC Cambuur"],
+    "Excelsior": ["Excelsior Rotterdam"], "FC Emmen": ["Emmen"], "Groningen": ["FC Groningen"],
+    "Twente": ["FC Twente"], "Utrecht": ["FC Utrecht"], "Fortuna Sittard": ["For Sittard"],
+    "Go Ahead Eagles": ["Go Ahead"], "Graafschap": ["De Graafschap"], "Heerenveen": ["sc Heerenveen"],
+    "Heracles": ["Heracles Almelo"], "NEC Nijmegen": ["N.E.C. Nijmegen", "Nijmegen"],
+    "NAC Breda": [], "Zwolle": ["PEC Zwolle"], "Sparta Rotterdam": [], "Telstar": ["SC Telstar"],
+    "VVV Venlo": ["Venlo"], "Vitesse": ["Vitesse Arnhem"], "Volendam": ["FC Volendam"],
+    "Waalwijk": ["RKC Waalwijk"], "Willem II": [],
+    # Norway
+    "Aalesund": ["Aalesunds FK"], "Bodo/Glimt": ["Bodo Glimt", "Bodø/Glimt"], "Brann": ["SK Brann"],
+    "Bryne": ["Bryne FK"], "Fredrikstad": ["Fredrikstad FK"], "HamKam": ["Ham-Kam"],
+    "Haugesund": ["FK Haugesund"], "Honefoss": ["Hønefoss"], "Jerv": ["FK Jerv"],
+    "KFUM Oslo": ["KFUM"], "Kongsvinger": ["Kongsvinger IL"], "Kristiansund": ["Kristiansund BK"],
+    "Lillestrom": ["Lillestrøm"], "Mjondalen": ["Mjøndalen"], "Molde": ["Molde FK"],
+    "Moss": ["Moss FK"], "Odd": ["Odds BK", "Odd Grenland"], "Ranheim": ["Ranheim TF"],
+    "Rosenborg": ["Rosenborg BK"], "Sandefjord": ["Sandefjord Fotball"], "Sandnes": ["Sandnes Ulf"],
+    "Sarpsborg 08": ["Sarpsborg"], "Sogndal": ["Sogndal Fotball"], "Stabaek": ["Stabæk"],
+    "Start": ["IK Start"], "Stromsgodset": ["Strømsgodset"], "Tromso": ["Tromsø"],
+    "Ull/Kisa": ["Ullensaker/Kisa"], "Valerenga": ["Vålerenga"], "Viking": ["Viking FK"],
+    # Romania
+    "CFR Cluj": ["CFR 1907 Cluj"], "Universitatea Craiova": ["CS Universitatea Craiova",
+        "FC Universitatea Craiova", "Univ. Craiova"], "Corvinul": ["Corvinul Hunedoara"],
+    "Csikszereda": ["Csikszereda M. Ciuc"], "Dinamo Bucuresti": ["Dinamo Bucharest"],
+    "FC Arges": ["Arges Pitesti"], "FC Botosani": ["Botosani"], "FC Hermannstadt": ["Hermannstadt"],
+    "Politehnica Iasi": ["FC Politehnica Iasi"], "Rapid Bucuresti": ["FC Rapid Bucuresti"],
+    "FC Voluntari": ["Voluntari"], "FCSB": ["Steaua Bucuresti"], "Farul Constanta": ["Farul"],
+    "Gloria Buzau": [], "Otelul Galati": ["Otelul"], "Petrolul Ploiesti": ["Petrolul"],
+    "Sepsi OSK": ["Sepsi Sf. Gheorghe", "Sepsi"], "Universitatea Cluj": ["U. Cluj"],
+    "UTA Arad": [], "Unirea Slobozia": [],
+    # Spain (segunda / recent top-flight spellings)
+    "Almeria": ["UD Almeria"], "Cadiz": ["Cadiz CF"], "Eibar": ["SD Eibar"],
+    "Espanyol": ["Espanol", "RCD Espanyol de Barcelona"], "Granada": ["Granada CF"],
+    "Huesca": ["SD Huesca"], "Leganes": ["CD Leganes"], "Levante": ["Levante UD"],
+    "Malaga": ["Malaga CF"], "Oviedo": ["Real Oviedo"],
+    "Deportivo La Coruna": ["RC Deportivo", "Deportivo"], "Racing Santander": ["R. Racing Club"],
+    # Switzerland (incl. Liechtenstein's Vaduz, which plays in the Swiss pyramid)
+    "Basel": ["FC Basel 1893", "FC Basel"], "Young Boys": ["BSC Young Boys", "YB"],
+    "Zurich": ["FC Zurich"], "Servette": ["Servette FC"], "Lugano": ["FC Lugano"],
+    "Luzern": ["FC Luzern"], "Sion": ["FC Sion"], "St. Gallen": ["FC St. Gallen", "St Gallen"],
+    "Winterthur": ["FC Winterthur"], "Grasshoppers": ["Grasshopper Club Zurich"],
+    "Lausanne": ["FC Lausanne-Sport"], "Stade Lausanne-Ouchy": ["Lausanne-Ouchy"],
+    "Thun": ["FC Thun"], "Vaduz": ["FC Vaduz"], "Yverdon": ["Yverdon Sport FC"],
 }
 
 _STOP = re.compile(r"\b(fc|afc|cf|sc|ac|as|ss|us|cd|ca|the|club|de|sv)\b")
+
+# letters NFKD does not decompose but latin-1 cannot hold (or holds badly); used when writing
+# raw files, because build_matches.read_csv() reads them as latin-1
+_ASCII_FOLD = str.maketrans({"ø": "o", "Ø": "O", "æ": "ae", "Æ": "AE", "œ": "oe", "Œ": "OE",
+                             "đ": "d", "Đ": "D", "ł": "l", "Ł": "L", "ß": "ss", "þ": "th",
+                             "ð": "d", "ı": "i"})
+
+
+def to_ascii(name) -> str:
+    """Fold a club name to plain ASCII, even for letters NFKD leaves alone (ø, æ, ł, ß, ţ...)."""
+    s = str(name).translate(_ASCII_FOLD)
+    s = unicodedata.normalize("NFKD", s)
+    return "".join(c for c in s if not unicodedata.combining(c)).encode("ascii", "ignore").decode()
 
 
 def norm_key(name) -> str:
