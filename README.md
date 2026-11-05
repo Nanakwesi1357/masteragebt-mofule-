@@ -146,7 +146,7 @@ them and mapped through `TEAM_ALIASES`, so `out/unmapped_teams.txt` stays empty;
 Brazil/Argentina sections of that table now cover ~60 clubs across both sources' spellings
 (`SE Palmeiras`, `CA Mineiro`, `Belgrano de Córdoba`, `Gimnasia (Mendoza)` ...).
 
-### Coverage and limits: why European ties are out of scope
+### Cross-league fixtures: ClubElo as the prior
 
 `dc_model.py` fits ratings **inside one league**. An attack rating of 1.36 in `BRA` means
 "36% better than the average Brasileirão side" - it carries no information about how the
@@ -154,31 +154,75 @@ Brasileirão compares with the Premier League. For a domestic match the league c
 
     lambda = exp(mu + home + attack[home] - defence[away])
 
-For a cross-league match you need the league term to survive:
+For a cross-league match the league term has to survive:
 
     lambda = exp(mu + home + attack[home] - defence[away] + L[league_home] - L[league_away])
 
-`L` is identified *only* by matches between clubs from different leagues, i.e. European
-competition results (Champions League / Europa / Conference, qualifying rounds included).
-Without those matches the conversion is not estimable from domestic data at all, so any
-number printed for a Copenhagen v Iberia 1999 would be invented rather than fitted. As of
-2026-11 the reachable sources in this sandbox stop short: football-data.co.uk (and its mirror)
-covers 25 competitions but not Georgia, Lithuania, Latvia, Bulgaria, Cyprus, the Czech
-Republic or Albania; openfootball's European archive has domestic leagues for those countries
-but only through 2025 and no UEFA cup fixtures.
+`L` is identified *only* by matches between clubs from different leagues. openfootball's UEFA
+archive stops at 2025-26 and the reachable mirrors have no European fixtures for 2026-27, so
+`L` cannot be fitted here - and fitting it to a handful of qualifiers would be noise.
 
-What is honest to do with such a board today is read the price itself:
+So it is not fitted. `elo.py` + `cross_league.py` take it from **ClubElo**, which publishes one
+rating per club on a single scale, covering the leagues in `out/matches.csv` *and* the ones
+missing from it (Israel, Armenia, Croatia, Slovenia, Austria, Portugal, Italy, Germany,
+Scotland, Turkey, ...). Only two quantities are needed for a cross-league fixture, and each
+comes from the side that actually knows it:
+
+| quantity | source | why |
+|---|---|---|
+| goals the match should contain | the two leagues' own Dixon-Coles fits | goals per match is already in goals, so it transfers with no scale problem |
+| goal supremacy `lambda_home - lambda_away` | ClubElo rating difference, converted to goals | this is exactly the `L` term a single-league fit cannot express |
+| home advantage | each league's own fit, converted back into Elo points | measured (41 Elo in `E0`, 79 in `G1`), not the conventional 65 |
+
+The conversion is `E = 1 / (1 + 10^(-D/400))` inverted through the same score grid the model
+uses: find the supremacy whose grid gives `P(home) + 0.5 P(draw) = E`. Nothing else is fitted,
+so nothing else can leak.
 
 ```
-python tools/devig_board.py reports/board_2026-11-05.csv
+python tools/fetch_public_data.py --elo          # curl api.clubelo.com/<today> -> raw/elo/
+python predict_cross.py --home Benfica --away "Lech Poznan" --odds 1.21 7.61 11.80
+python predict_cross.py --board reports/board_2026-11-05_europa.csv --report reports/x.md
+python predict_cross.py --league-offsets        # the offset L, in goals, between leagues
 ```
 
-That prints the de-vigged market probabilities, fair prices and the book's margin. It is the
-baseline a cross-league model would have to beat, and it is the only defensible number when a
-fixture is outside the model's coverage. With `--ratings` it also attaches each side's
-*domestic* rating and table position (looked up from the league the club actually plays in),
-and says "no rating" where the league is not covered - context, never a combined probability.
-`status=live` in the CSV marks an in-play fixture whose captured prices are stale.
+**Every price is gated.** A missing rating (either club), or a snapshot older than
+`--max-age-days` (default 7), *refuses* the price - no number at all. An unmodelled league, a
+rating gap beyond +/-400 Elo, or a >90% outcome returns a number marked `PROVISIONAL` together
+with the assumption doing the work. `--allow-stale` prices anyway; it never claims value.
+
+**Is the Elo scale right?** `python tools/validate_elo.py` scores the same code path inside the
+leagues that can be priced, out of sample, against Dixon-Coles and the closing line
+(`reports/elo_validation.md`):
+
+| window after snapshot | matches | elo RPS | dc RPS | market RPS |
+|---|---|---|---|---|
+| 60 days | 364 | 0.2166 | 0.2131 | 0.1928 (244 matches) |
+| 120 days | 824 | 0.2169 | 0.2164 | 0.1928 |
+| 365 days | 1931 | **0.2088** | 0.2111 | 0.1928 |
+
+(The market column is the same 244 matches each time: the closing odds in `out/matches.csv` run
+out about seven weeks after this snapshot, so there is nothing further out to compare against.)
+
+On the matches that have a closing line, Elo scores 0.1955 and Dixon-Coles 0.1953 against the
+market's 0.1928 - the external prior is level with the fitted model, and the correlation between
+Elo-implied and fitted supremacy is 0.85-0.98 per league. That is the licence for using it where
+Dixon-Coles has nothing to say.
+
+What it does **not** claim: the league-offset step is itself unvalidated (no cross-league
+fixtures exist in `out/matches.csv`); a stale snapshot degrades individual ties badly even when
+aggregate RPS looks fine, which is why value claims require a fresh snapshot; and ClubElo's own
+coverage is a snapshot of *its* raters' view, not ground truth.
+
+For reading a board without pricing it - or when no snapshot is available - the market baseline
+is still the honest number:
+
+```
+python tools/devig_board.py reports/board_2026-11-05.csv --ratings
+```
+
+That prints de-vigged market probabilities, fair prices and the book's margin, and attaches each
+side's *domestic* rating and table position. `status=live` marks an in-play fixture whose
+captured prices are stale.
 
 ### Tests
 
@@ -187,4 +231,6 @@ python -m unittest discover -s tests -v
 ```
 Checks the analytic gradient against finite differences (a sign error silently fits nothing),
 that the score grid is a distribution, de-vigging, the metrics, and that no future match enters
-a fit.
+a fit. `tests/test_elo.py` covers the cross-league side without touching the network: ClubElo
+name resolution (media spellings, hyphens, accents), the Elo -> goals round trip and its
+saturation, and every gate (no rating, stale snapshot, fresh snapshot, extreme gap).

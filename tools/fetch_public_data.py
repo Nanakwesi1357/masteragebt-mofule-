@@ -15,6 +15,8 @@ What it does
                   tools/import_open_matchday.py
 3. G1/SWZ/ROU     openfootball archive + open-matchday current season, written by
                   tools/import_openfootball.py
+4. --elo          ClubElo daily ratings -> raw/elo/<date>.csv (not GitHub: api.clubelo.com).
+                  Optional, and it fails softly - the rest of the rebuild does not need it.
 
 Every download tries `raw.githubusercontent.com` first and falls back to the GitHub contents
 API, which is what a locked-down sandbox usually needs. Set GITHUB_TOKEN to avoid the API
@@ -27,6 +29,8 @@ Usage
     python tools/fetch_public_data.py --seasons 6      # six seasons of history
     python tools/fetch_public_data.py --leagues E0 SP1 # only these
     python tools/fetch_public_data.py --no-current     # history only
+    python tools/fetch_public_data.py --elo            # plus today's ClubElo snapshot
+    python tools/fetch_public_data.py --elo 2026-11-05 --elo-only
     python build_matches.py                            # then build out/matches.csv
 
 Standard library only, so it runs before you have installed numpy/pandas.
@@ -218,6 +222,37 @@ def current_openfootball(codes):
     return ok
 
 
+CLUBELO = "http://api.clubelo.com/"
+
+
+def fetch_elo(day=None, quiet=False):
+    """ClubElo's daily CSV -> raw/elo/<date>.csv. Soft failure: no network is not an error."""
+    import datetime as _dt
+    day = day or _dt.date.today().isoformat()
+    dest = RAW / "elo" / f"{day}.csv"
+    if dest.exists() and dest.stat().st_size > 1000:
+        if not quiet:
+            print(f"elo: {dest.relative_to(ROOT)} already present ({dest.stat().st_size // 1024} KB)")
+        return True
+    url = CLUBELO + day
+    try:
+        with urllib.request.urlopen(url, timeout=30) as r:      # noqa: S310 - fixed host
+            body = r.read().decode("utf-8", "replace")
+    except (urllib.error.URLError, TimeoutError, OSError) as e:
+        print(f"elo: could not reach {url} ({e.__class__.__name__}: {e})")
+        print("     write/elo/ is not needed for the goals model; if you want cross-league "
+              "prices, fetch one snapshot on a machine that can reach api.clubelo.com:")
+        print(f"     curl -s {url} > raw/elo/{day}.csv")
+        return False
+    if "Club" not in body.splitlines()[0] and "," not in body[:200]:
+        print(f"elo: unexpected response from {url}; not written")
+        return False
+    write(dest, body)
+    n = len([ln for ln in body.splitlines() if ln.strip()]) - 1
+    print(f"elo: {dest.relative_to(ROOT)} ({n} clubs, snapshot {day})")
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--seasons", type=int, default=9,
@@ -226,7 +261,16 @@ def main():
                     help=f"subset of codes, e.g. E0 SP1 G1 (default: everything this script knows)")
     ap.add_argument("--no-history", action="store_true", help="skip the mirror history download")
     ap.add_argument("--no-current", action="store_true", help="skip the running season")
+    ap.add_argument("--elo", nargs="?", const="today", default=None, metavar="YYYY-MM-DD",
+                    help="also fetch the ClubElo snapshot for this date (default: today)")
+    ap.add_argument("--elo-only", action="store_true", help="fetch the ClubElo snapshot and stop")
     a = ap.parse_args()
+    elo_day = None if a.elo is None else (
+        __import__("datetime").date.today().isoformat() if a.elo == "today" else a.elo)
+
+    if a.elo_only:
+        ok = fetch_elo(elo_day)
+        sys.exit(0 if ok else 1)
 
     main_codes = set(MIRROR_MAIN) | set(OM_COMPETITION_CODES())
     extra_codes = set(MIRROR_EXTRA) | set(OPENFOOTBALL_CODES())
@@ -249,6 +293,8 @@ def main():
 
     have = sorted({p.stem for p in (RAW / "main").glob("*/*.csv")} |
                   {p.stem for p in (RAW / "extra").glob("*.csv")}) if (RAW / "main").exists() else []
+    if elo_day:
+        fetch_elo(elo_day)
     print(f"\nleagues now on disk: {', '.join(have) if have else 'none'}")
     print("next: python build_matches.py    (then predict.py / backtest.py)")
 
