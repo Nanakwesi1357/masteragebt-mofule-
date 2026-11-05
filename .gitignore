@@ -1,7 +1,6 @@
 # generated data and artefacts (rebuild with `python update_all.py`)
 raw/
 out/
-reports/*.csv
 __pycache__/
 *.pyc
 .venv/
