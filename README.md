@@ -52,6 +52,13 @@ How it works, briefly:
 - Side markets (over/under 2.5, both teams to score, most likely scorelines) come from the same
   score grid, so they are consistent with the 1X2 numbers.
 
+Any league in `out/matches.csv` works, not just the Premier League:
+
+```
+python predict.py --home Palmeiras --away Remo --league BRA --odds 1.24 6.48 12.10
+python predict.py --home "Gimnasia L.P." --away Belgrano --league ARG --odds 2.77 3.07 2.74
+```
+
 ### How good is it?
 
 `python backtest.py --league E0` refits every 14 days and scores the out-of-sample matches:
@@ -61,6 +68,16 @@ model          n      RPS   logloss    Brier     acc  draw bias
 DixonColes   850   0.2054    1.0064   0.6025   49.1%      -1.8%
 close odds   590   0.1972    0.9739   0.5808   53.9%      -1.2%
 ```
+
+| league | matches | RPS | log loss | accuracy | closing line RPS | note |
+|---|---|---|---|---|---|---|
+| England Premier League (E0) | 850 | 0.2054 | 1.006 | 49.1% | 0.1972 | market available, model ~0.008 worse |
+| Brazil Serie A (BRA) | 716 | 0.2017 | 0.999 | 51.4% | - | no odds in the fallback data |
+| Argentina Primera (ARG) | 714 | 0.2116 | 1.051 | 45.7% | - | split/zonal season format, weakest of the three |
+
+Argentina is the weakest case on purpose: its seasons are split into Apertura/Clausura with
+zones, so a club's fixture list is uneven, and the model over-predicts draws there by ~2.6pp.
+Brazil's large home advantage (x1.40, versus x1.20 in England) is picked up automatically.
 
 The closing line is still better than the model (RPS +0.008, and flat-staking the model's
 disagreements with the close loses a few percent). So: use the probabilities as a structured
@@ -77,7 +94,16 @@ layout, and the rest of the pipeline runs unchanged:
 
 ```
 python tools/import_open_matchday.py          # current season, E0 + E1
+python tools/import_openfootball.py --league BRA   # Brazil, past seasons + current
+python tools/import_openfootball.py --league ARG   # Argentina, past seasons + current
 ```
+
+`import_openfootball.py` merges the openfootball archive (past seasons) with open-matchday
+(running season + its fixtures) into `raw/extra/BRA.csv` / `raw/extra/ARG.csv`. Both write
+latin-1 to match football-data.co.uk's encoding. Club names are left as the source spells
+them and mapped through `TEAM_ALIASES`, so `out/unmapped_teams.txt` stays empty; the
+Brazil/Argentina sections of that table now cover ~60 clubs across both sources' spellings
+(`SE Palmeiras`, `CA Mineiro`, `Belgrano de Córdoba`, `Gimnasia (Mendoza)` ...).
 
 ### Tests
 

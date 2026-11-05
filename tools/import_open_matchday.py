@@ -129,7 +129,7 @@ def main():
         clean = to_football_data(rows, code)
         dest = RAW / "main" / season / f"{code}.csv"
         dest.parent.mkdir(parents=True, exist_ok=True)
-        with dest.open("w", newline="") as f:
+        with dest.open("w", newline="", encoding="latin-1") as f:
             w = csv.DictWriter(f, fieldnames=COLUMNS)
             w.writeheader()
             w.writerows(clean)
