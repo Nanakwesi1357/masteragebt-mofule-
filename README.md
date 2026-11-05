@@ -105,6 +105,37 @@ them and mapped through `TEAM_ALIASES`, so `out/unmapped_teams.txt` stays empty;
 Brazil/Argentina sections of that table now cover ~60 clubs across both sources' spellings
 (`SE Palmeiras`, `CA Mineiro`, `Belgrano de Córdoba`, `Gimnasia (Mendoza)` ...).
 
+### Coverage and limits: why European ties are out of scope
+
+`dc_model.py` fits ratings **inside one league**. An attack rating of 1.36 in `BRA` means
+"36% better than the average Brasileirão side" - it carries no information about how the
+Brasileirão compares with the Premier League. For a domestic match the league cancels out:
+
+    lambda = exp(mu + home + attack[home] - defence[away])
+
+For a cross-league match you need the league term to survive:
+
+    lambda = exp(mu + home + attack[home] - defence[away] + L[league_home] - L[league_away])
+
+`L` is identified *only* by matches between clubs from different leagues, i.e. European
+competition results (Champions League / Europa / Conference, qualifying rounds included).
+Without those matches the conversion is not estimable from domestic data at all, so any
+number printed for a Copenhagen v Iberia 1999 would be invented rather than fitted. As of
+2026-11 the reachable sources in this sandbox stop short: football-data.co.uk (and its mirror)
+covers 25 competitions but not Georgia, Lithuania, Latvia, Bulgaria, Cyprus, the Czech
+Republic or Albania; openfootball's European archive has domestic leagues for those countries
+but only through 2025 and no UEFA cup fixtures.
+
+What is honest to do with such a board today is read the price itself:
+
+```
+python tools/devig_board.py reports/board_2026-11-05.csv
+```
+
+That prints the de-vigged market probabilities, fair prices and the book's margin. It is the
+baseline a cross-league model would have to beat, and it is the only defensible number when a
+fixture is outside the model's coverage.
+
 ### Tests
 
 ```
