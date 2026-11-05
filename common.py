@@ -69,6 +69,13 @@ TEAM_ALIASES = {
     "Birmingham City": ["Birmingham"], "Charlton Athletic": ["Charlton"], "Sunderland": ["Sunderland AFC"],
     "Everton": [], "Arsenal": [], "Chelsea": [], "Liverpool": [], "Fulham": [], "Brentford": [],
     "Burnley": [], "Bournemouth": ["AFC Bournemouth"], "Aston Villa": [], "Crystal Palace": [],
+    # England, lower divisions (needed while a club is outside the Premier League)
+    "Southampton": ["Southampton FC"], "Watford": [],
+    "Middlesbrough": ["Middlesborough"], "Millwall": [], "Portsmouth": [], "Reading": [],
+    "Barnsley": [], "Blackpool": [], "Wrexham": [], "Lincoln City": ["Lincoln"],
+    "Bolton Wanderers": ["Bolton"], "Huddersfield Town": ["Huddersfield"],
+    "Wigan Athletic": ["Wigan"], "Rotherham United": ["Rotherham"],
+    "Peterborough United": ["Peterboro", "Peterborough"], "Wycombe Wanderers": ["Wycombe"],
     # Germany
     "Bayern Munich": ["Bayern Munchen", "Bayern Munich"], "Borussia Dortmund": ["Dortmund"],
     "Borussia Monchengladbach": ["M'gladbach", "Monchengladbach", "Gladbach"],
