@@ -175,7 +175,10 @@ python tools/devig_board.py reports/board_2026-11-05.csv
 
 That prints the de-vigged market probabilities, fair prices and the book's margin. It is the
 baseline a cross-league model would have to beat, and it is the only defensible number when a
-fixture is outside the model's coverage.
+fixture is outside the model's coverage. With `--ratings` it also attaches each side's
+*domestic* rating and table position (looked up from the league the club actually plays in),
+and says "no rating" where the league is not covered - context, never a combined probability.
+`status=live` in the CSV marks an in-play fixture whose captured prices are stale.
 
 ### Tests
 
