@@ -230,7 +230,8 @@ def main():
             print("\n" + fixture_report(cp, odds, as_of))
         print("\n" + board_table(prices, odds_list, as_of))
         if a.report:
-            write_report(a.report, prices, odds_list, elo, as_of, board_path=a.board)
+            write_report(a.report, prices, odds_list, elo, as_of, board_path=a.board,
+                         max_age_days=a.max_age_days)
         return
 
     if not (a.home and a.away):
@@ -241,10 +242,10 @@ def main():
     text = fixture_report(cp, a.odds, as_of)
     print("\n" + text)
     if a.report:
-        write_report(a.report, [cp], [a.odds], elo, as_of)
+        write_report(a.report, [cp], [a.odds], elo, as_of, max_age_days=a.max_age_days)
 
 
-def write_report(path, prices, odds_list, elo, as_of, board_path=None):
+def write_report(path, prices, odds_list, elo, as_of, board_path=None, max_age_days=7):
     dest = Path(path)
     dest.parent.mkdir(parents=True, exist_ok=True)
     age = elo.age_days(as_of)
@@ -291,7 +292,8 @@ def write_report(path, prices, odds_list, elo, as_of, board_path=None):
     md += ["A `PROVISIONAL` price is a number with a named assumption doing the work; it is not "
            "a forecast. Only `ok` rows are priced on a snapshot recent enough to be about the "
            "teams as they are now.", "",
-           f"Staleness rule: a snapshot older than {7} days is refused unless `--allow-stale`, "
+           f"Staleness rule: a snapshot older than {max_age_days} days is refused unless "
+           "`--allow-stale`, "
            "because rating drift over a season (transfers, new manager, form) is larger than the "
            "edges anyone is looking for.", "",
            "Evidence for the Elo scale: `python tools/validate_elo.py` scores this same machinery "
