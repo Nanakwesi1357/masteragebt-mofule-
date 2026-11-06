@@ -283,6 +283,21 @@ TEAM_ALIASES = {
     "Sivasspor": [], "Trabzonspor": [], "Umraniyespor": [], "Yeni Malatyaspor": [],
     "Gaziantep": ["Gaziantep FK"], "Altay": ["Altay SK"], "Amedspor": ["Amed Sportif"],
     "Fenerbahce": ["Fenerbahce SK"], "Galatasaray": ["Galatasaray SK"], "Besiktas": ["Besiktas JK"],
+    # Sweden (Allsvenskan, calendar-year seasons: 2026 is one season, so the mirror's history and
+    # open-matchday's "2627" file both land in season 2627 and de-dup on the match key)
+    "Osters": ["Oster"],  # Osters IF: "Osters" in 2013, "Oster" in 2022 and 2025, never both at once
+    "Malmo FF": ["Malmo"], "Goteborg": ["IFK Goteborg"], "Hammarby": ["Hammarby IF"],
+    "Elfsborg": ["IF Elfsborg"], "AIK": ["AIK Stockholm"], "Djurgarden": ["Djurgardens IF"],
+    "Hacken": ["BK Hacken"], "Helsingborg": ["Helsingborgs IF"], "Norrkoping": ["IFK Norrkoping"],
+    "Sirius": ["IK Sirius"], "Mjallby": ["Mjallby AIF"], "Degerfors": ["Degerfors IF"],
+    "Kalmar": ["Kalmar FF"], "Varberg": ["Varbergs BoIS"], "Varnamo": ["IFK Varnamo"],
+    "Halmstad": ["Halmstads BK"], "Sundsvall": ["GIF Sundsvall"], "Orebro": ["Orebro SK"],
+    "Gefle": ["Gefle IF"], "GAIS": ["GAIS Goteborg"], "Orgryte": ["Orgryte IS"],
+    "Brage": ["IK Brage"], "Trelleborgs": ["Trelleborgs FF"], "Brommapojkarna": ["IF Brommapojkarna"],
+    "Dalkurd": ["Dalkurd FF"], "Falkenbergs": ["Falkenbergs FF"], "Jonkopings": ["Jonkopings Sodra"],
+    "Landskrona": ["Landskrona BoIS"], "Ljungskile": ["Ljungskile SK"], "Syrianska": ["Syrianska FC"],
+    "Atvidabergs": ["Atvidabergs FF"], "AFC Eskilstuna": ["AFC Eskilstuna FK"],
+    "Vasteras SK": [], "Ostersunds": ["Ostersunds FK"],
 }
 
 _STOP = re.compile(r"\b(fc|afc|cf|sc|ac|as|ss|us|cd|ca|the|club|de|sv)\b")

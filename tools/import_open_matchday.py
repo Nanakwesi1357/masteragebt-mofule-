@@ -50,6 +50,7 @@ COMPETITIONS = {
     "POR_1_primeira-liga": "P1",
     "SCO_1_premiership": "SC0",
     "TUR_1_super-lig": "T1",
+    "SWE_1_allsvenskan": "SWE",
 }
 
 COLUMNS = ["Div", "Date", "Time", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "FTR",

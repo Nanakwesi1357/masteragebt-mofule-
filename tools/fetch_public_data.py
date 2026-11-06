@@ -58,7 +58,7 @@ MIRROR_MAIN = {"E0": "premier-league", "E1": "championship", "SP1": "la-liga",
                "F1": "ligue-1", "B1": "jupiler-league", "N1": "eredivisie",
                "D1": "bundesliga", "I1": "serie-a", "P1": "primeira-liga",
                "SC0": "scottish-premiership", "T1": "super-lig"}
-MIRROR_EXTRA = {"DNK": "denmark", "NOR": "norway"}
+MIRROR_EXTRA = {"DNK": "denmark", "NOR": "norway", "SWE": "sweden"}
 MIRROR_REPO = "huhao930422-debug/football-odds-mirror"
 
 OM_REPO = "oladeeayo/open-matchday"

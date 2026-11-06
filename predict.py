@@ -121,7 +121,8 @@ def main():
             sys.exit(str(e))
 
     # ---------- console ----------
-    kick = "date unknown"
+    kick = f"{as_of:%a %d %b %Y} (from --date; fixture not in out/matches.csv)" \
+        if as_of is not None else "date unknown"
     if fx is not None:
         ko = fx.kickoff
         try:

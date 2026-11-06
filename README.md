@@ -87,6 +87,7 @@ the benchmark to beat:
 | Germany Bundesliga | D1 | 684 | 0.2061 | 1.007 | 52.2% | 0.1966 | +0.0095 |
 | Scotland Premiership | SC0 | 525 | 0.2047 | 0.990 | 52.4% | 0.1999 | +0.0047 |
 | Turkey Super Lig | T1 | 738 | 0.1975 | 0.977 | 51.2% | 0.1798 | +0.0177 |
+| Sweden Allsvenskan | SWE | 693 | 0.2214 | 1.032 | 49.8% | 0.2142 | +0.0072 |
 | Greece Super League | G1 | 360 | 0.2017 | 0.970 | 53.1% | - | no odds in source |
 | Brazil Serie A | BRA | 716 | 0.2017 | 0.999 | 51.4% | - | no odds in source |
 | Romania Liga 1 | ROU | 395 | 0.2022 | 1.018 | 48.6% | - | no odds in source |
@@ -106,9 +107,12 @@ home edge would misprice every one of those leagues.
 
 Fallback-source gaps worth knowing: Greece, Switzerland and Romania come from openfootball
 plus open-matchday instead of football-data.co.uk, so they have no closing odds (no market
-benchmark) and Switzerland/Romania have no 2025-26 season at all. The five leagues added in
-November 2026 (D1, I1, P1, SC0, T1) are mirror history + open-matchday for the running season,
-so their current season has no odds either - the market benchmark above comes from 2024-26.
+benchmark) and Switzerland/Romania have no 2025-26 season at all. The six leagues added in
+November 2026 (D1, I1, P1, SC0, SWE, T1) are mirror history + open-matchday for the running
+season, so their current season has no odds either - the market benchmark above comes from
+2024-26. Allsvenskan runs on a calendar year, so its 2026 season is one season; a fixture in
+its last rounds may be missing from the fixtures file, in which case pass `--date` and the
+model fits on everything before it.
 
 The closing line is still better than the model (RPS +0.008, and flat-staking the model's
 disagreements with the close loses a few percent). So: use the probabilities as a structured
