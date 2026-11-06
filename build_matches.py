@@ -105,8 +105,9 @@ def main():
     m = pd.concat(frames, ignore_index=True)
     m = m.dropna(subset=["date"])
     m = m[m["home"].notna() & m["away"].notna()]
-    m["home"] = m["home"].map(canon)
-    m["away"] = m["away"].map(canon)
+    # league-scoped, because a few spellings belong to two clubs in different countries
+    m["home"] = [canon(t, league=c) for t, c in zip(m["home"], m["league_code"])]
+    m["away"] = [canon(t, league=c) for t, c in zip(m["away"], m["league_code"])]
     m = m[(m["home"] != "") & (m["away"] != "")]
 
     m["finished"] = m["hg"].notna() & m["ag"].notna()

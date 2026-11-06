@@ -149,7 +149,7 @@ TEAM_ALIASES = {
     "Arsenal de Sarandi": ["Arsenal de Sarandí"],
     # Other
     "PSV Eindhoven": ["PSV"], "Ajax": ["Ajax Amsterdam"], "Feyenoord": [], "AZ Alkmaar": ["AZ"],
-    "Benfica": ["SL Benfica"], "Porto": ["FC Porto"], "Sporting CP": ["Sporting Lisbon", "Sporting"],
+    "Benfica": ["SL Benfica"], "Porto": ["FC Porto"], "Sporting CP": ["Sporting Lisbon", "Sp Lisbon", "Sp. Lisbon", "Sporting"],
     "Galatasaray": [], "Fenerbahce": [], "Besiktas": [], "Celtic": [], "Rangers": [],
 
     # ------------------------------------------------------------------ wider Europe
@@ -216,7 +216,7 @@ TEAM_ALIASES = {
     "Ull/Kisa": ["Ullensaker/Kisa"], "Valerenga": ["Vålerenga"], "Viking": ["Viking FK"],
     # Romania
     "CFR Cluj": ["CFR 1907 Cluj"], "Universitatea Craiova": ["CS Universitatea Craiova",
-        "FC Universitatea Craiova", "Univ. Craiova"], "Corvinul": ["Corvinul Hunedoara"],
+        "Univ. Craiova"], "FC U Craiova": ["U Craiova 1948", "FCU Craiova"], "Corvinul": ["Corvinul Hunedoara"],
     "Csikszereda": ["Csikszereda M. Ciuc"], "Dinamo Bucuresti": ["Dinamo Bucharest"],
     "FC Arges": ["Arges Pitesti"], "FC Botosani": ["Botosani"], "FC Hermannstadt": ["Hermannstadt"],
     "Politehnica Iasi": ["FC Politehnica Iasi"], "Rapid Bucuresti": ["FC Rapid Bucuresti"],
@@ -237,6 +237,52 @@ TEAM_ALIASES = {
     "Winterthur": ["FC Winterthur"], "Grasshoppers": ["Grasshopper Club Zurich"],
     "Lausanne": ["FC Lausanne-Sport"], "Stade Lausanne-Ouchy": ["Lausanne-Ouchy"],
     "Thun": ["FC Thun"], "Vaduz": ["FC Vaduz"], "Yverdon": ["Yverdon Sport FC"],
+    # -------------------------------------------------- top flights with two sources, two styles
+    # These leagues arrive from two sources with different house styles: the mirror uses
+    # football-data's long spellings ("1. FC Koln", "Casa Pia AC"), open-matchday the short ones
+    # ("FC Koln", "Casa Pia"). Unmapped, one club gets two half-histories and every current-season
+    # side looks newly promoted. Canonical = the common short name.
+    # Germany
+    "FC Koln": ["Koln", "Cologne", "1. FC Koln"], "Union Berlin": ["FC Union Berlin", "1. FC Union Berlin"],
+    "Mainz": ["Mainz 05", "FSV Mainz 05", "1. FSV Mainz 05"], "Bayer Leverkusen": ["Leverkusen", "Bayer 04 Leverkusen"],
+    "Schalke 04": ["FC Schalke 04"], "Paderborn": ["SC Paderborn 07"],
+    "St Pauli": ["FC St. Pauli", "St. Pauli"], "Arminia Bielefeld": ["Bielefeld"], "VfL Bochum": ["Bochum"],
+    "Darmstadt 98": ["Darmstadt", "SV Darmstadt 98"], "Hannover 96": ["Hannover"],
+    "Hertha BSC": ["Hertha"], "1. FC Nurnberg": ["Nurnberg"], "Fortuna Dusseldorf": [],
+    "Greuther Furth": [], "Holstein Kiel": [], "SV 07 Elversberg": [],
+    "Heidenheim": ["FC Heidenheim", "1. FC Heidenheim"],
+    # Italy
+    "Benevento": [], "Brescia": [], "Chievo": ["Chievo Verona"], "Cremonese": [], "Crotone": [],
+    "Empoli": [], "Frosinone": [], "Monza": [], "Pisa": [], "Salernitana": [], "Sampdoria": [],
+    "Spal": ["SPAL"], "Spezia": [], "Venezia": [],
+    # Portugal
+    "Vitoria Guimaraes": ["Guimaraes"], "Vitoria Setubal": ["Setubal"],
+    "Braga": ["SC Braga", "Sp Braga", "Sporting Braga"], "Nacional": ["CD Nacional", "Nacional Madeira"],
+    "Alverca": ["FC Alverca"], "Arouca": ["FC Arouca"], "Casa Pia": ["Casa Pia AC"],
+    "Estoril": ["Estoril Praia"], "Estrela Amadora": ["Estrela"], "Famalicao": ["FC Famalicao"],
+    "Gil Vicente": ["Gil Vicente FC"], "Maritimo": ["Maritimo M."], "Moreirense": ["Moreirense FC"],
+    "Rio Ave": ["Rio Ave FC"], "Academico": ["Academico Viseu"], "AVS": ["AVS Futebol SAD"],
+    "Aves": ["Desportivo Aves"], "Belenenses": ["Belenenses SAD"], "Boavista": [], "Chaves": [],
+    "Farense": [], "Feirense": [], "Pacos Ferreira": [], "Portimonense": [], "Santa Clara": [],
+    "Tondela": [], "Vizela": [],
+    # Scotland
+    "Hearts": ["Heart of Midlothian"], "St Johnstone": ["St. Johnstone"], "St Mirren": ["St. Mirren"],
+    "Hibernian": ["Hibs"], "Aberdeen": [], "Dundee": [], "Dundee United": [], "Falkirk": [],
+    "Hamilton": ["Hamilton Academical"], "Kilmarnock": [], "Livingston": [], "Motherwell": [],
+    "Ross County": [],
+    # Turkey
+    "Istanbul Basaksehir": ["Buyuksehyr", "Basaksehir", "Istanbul Basaksehir FK"],
+    "Erzurumspor": ["Erzurum BB", "Erzurumspor FK"], "Goztepe": ["Goztep"],
+    "Rizespor": ["Caykur Rizespor"], "Adana Demirspor": ["Ad. Demirspor"],
+    "Akhisar Belediyespor": ["Akhisarspor"], "Alanyaspor": ["Aytemiz Alanyaspor"],
+    "Antalyaspor": ["Fraport TAV Antalyaspor"], "Ankaragucu": ["MKE Ankaragucu"],
+    "Bodrumspor": [], "Bursaspor": [], "Corum": ["Corum FK"], "Denizlispor": [],
+    "Eyupspor": [], "Genclerbirligi": [], "Giresunspor": [], "Hatayspor": [], "Istanbulspor": [],
+    "Karagumruk": ["Fatih Karagumruk"], "Kasimpasa": ["Kasimpasa SK"], "Kayserispor": [],
+    "Kocaelispor": [], "Konyaspor": ["Konyaspor KIF"], "Pendikspor": [], "Samsunspor": [],
+    "Sivasspor": [], "Trabzonspor": [], "Umraniyespor": [], "Yeni Malatyaspor": [],
+    "Gaziantep": ["Gaziantep FK"], "Altay": ["Altay SK"], "Amedspor": ["Amed Sportif"],
+    "Fenerbahce": ["Fenerbahce SK"], "Galatasaray": ["Galatasaray SK"], "Besiktas": ["Besiktas JK"],
 }
 
 _STOP = re.compile(r"\b(fc|afc|cf|sc|ac|as|ss|us|cd|ca|the|club|de|sv)\b")
@@ -268,13 +314,34 @@ for _canon, _aliases in TEAM_ALIASES.items():
     for _n in [_canon, *_aliases]:
         _LOOKUP[norm_key(_n)] = _canon
 
+# Two clubs can share a spelling across leagues, and `norm_key()` folds the whole world at once:
+# "Vitoria" is EC Vitoria in Brazil and Vitoria de Guimaraes in Portugal, and Romanian sources
+# write the two Craiova clubs almost identically ("CS Universitatea Craiova" / "FC Universitatea
+# Craiova" - the stopword fold makes them the same key). These overrides are applied on the raw
+# name, before folding, and only inside the named league.
+LEAGUE_ALIASES = {
+    "P1": {"Vitoria": "Vitoria Guimaraes", "Vitoria FC": "Vitoria Setubal"},
+    "ROU": {"FC Universitatea Craiova": "FC U Craiova", "U Craiova 1948": "FC U Craiova",
+            "CS Universitatea Craiova": "Universitatea Craiova"},
+    "BRA": {"Vitoria": "Vitoria"},
+}
+
 UNMAPPED = set()
 
 
-def canon(name) -> str:
-    """Canonical team name; unknown names pass through cleaned and are recorded in UNMAPPED."""
+def canon(name, league=None) -> str:
+    """Canonical team name; unknown names pass through cleaned and are recorded in UNMAPPED.
+
+    `league` disambiguates the handful of spellings two clubs share (see LEAGUE_ALIASES);
+    without it the global table is used and such a name resolves to its first owner.
+    """
     if name is None or str(name).strip() == "" or str(name).lower() == "nan":
         return ""
+    raw = str(name).strip()
+    if league:
+        override = LEAGUE_ALIASES.get(league, {})
+        if raw in override:
+            return override[raw]
     key = norm_key(name)
     if key in _LOOKUP:
         return _LOOKUP[key]

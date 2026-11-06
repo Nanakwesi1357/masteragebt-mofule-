@@ -45,6 +45,11 @@ COMPETITIONS = {
     "FRA_1_ligue-1": "F1",
     "BEL_1_pro-league": "B1",
     "NED_1_eredivisie": "N1",
+    "GER_1_bundesliga": "D1",
+    "ITA_1_serie-a": "I1",
+    "POR_1_primeira-liga": "P1",
+    "SCO_1_premiership": "SC0",
+    "TUR_1_super-lig": "T1",
 }
 
 COLUMNS = ["Div", "Date", "Time", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "FTR",

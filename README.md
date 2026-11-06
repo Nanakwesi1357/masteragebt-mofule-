@@ -82,25 +82,33 @@ the benchmark to beat:
 | Belgium Pro League | B1 | 705 | 0.2084 | 1.012 | 49.5% | 0.1951 | +0.0133 |
 | Norway Eliteserien | NOR | 553 | 0.2054 | 0.963 | 54.8% | 0.1930 | +0.0124 |
 | Denmark Superliga | DNK | 450 | 0.2142 | 1.037 | 51.6% | 0.2017 | +0.0125 |
+| Portugal Primeira Liga | P1 | 702 | 0.1833 | 0.937 | 55.3% | 0.1759 | +0.0074 |
+| Italy Serie A | I1 | 860 | 0.1961 | 0.977 | 53.5% | 0.1873 | +0.0088 |
+| Germany Bundesliga | D1 | 684 | 0.2061 | 1.007 | 52.2% | 0.1966 | +0.0095 |
+| Scotland Premiership | SC0 | 525 | 0.2047 | 0.990 | 52.4% | 0.1999 | +0.0047 |
+| Turkey Super Lig | T1 | 738 | 0.1975 | 0.977 | 51.2% | 0.1798 | +0.0177 |
 | Greece Super League | G1 | 360 | 0.2017 | 0.970 | 53.1% | - | no odds in source |
 | Brazil Serie A | BRA | 716 | 0.2017 | 0.999 | 51.4% | - | no odds in source |
 | Romania Liga 1 | ROU | 395 | 0.2022 | 1.018 | 48.6% | - | no odds in source |
 | Argentina Primera | ARG | 714 | 0.2116 | 1.051 | 45.7% | - | no odds in source |
 | Switzerland Super League | SWZ | 287 | 0.2188 | 1.045 | 49.8% | - | 2025-26 season missing |
 
-Read the last column honestly: the model loses to the closing line everywhere, by 0.006 to
-0.015 RPS. That is the expected result for a goals-only model and it is why `predict.py`
-prints an 80% band instead of a confident single number. Argentina and Switzerland are the
-weakest (split/zonal season formats, and for Switzerland one whole season is missing from the
-fallback source).
+Read the last column honestly: the model loses to the closing line everywhere, by 0.005 to
+0.018 RPS. That is the expected result for a goals-only model and it is why `predict.py`
+prints an 80% band instead of a confident single number. Turkey is the weakest with odds
+(+0.0177, and flat-staking its disagreements loses 29%) - treat a 5-point edge there as noise.
+Argentina and Switzerland have no odds in their source; Argentina's zonal season format and a
+missing Swiss season make their numbers the least reliable of the set.
 
 Home advantage is estimated per league rather than assumed, and it varies a lot: Netherlands
-x1.12, England x1.21, Brazil x1.40, Greece x1.47, Romania x1.48. Assuming a single European
+x1.12, England x1.21, Brazil x1.40, Greece x1.47, Romania x1.48 (in Elo points, 25 to 79). Assuming a single European
 home edge would misprice every one of those leagues.
 
 Fallback-source gaps worth knowing: Greece, Switzerland and Romania come from openfootball
 plus open-matchday instead of football-data.co.uk, so they have no closing odds (no market
-benchmark) and Switzerland/Romania have no 2025-26 season at all.
+benchmark) and Switzerland/Romania have no 2025-26 season at all. The five leagues added in
+November 2026 (D1, I1, P1, SC0, T1) are mirror history + open-matchday for the running season,
+so their current season has no odds either - the market benchmark above comes from 2024-26.
 
 The closing line is still better than the model (RPS +0.008, and flat-staking the model's
 disagreements with the close loses a few percent). So: use the probabilities as a structured
