@@ -33,17 +33,17 @@ E0 walk-forward backtest (refit every 14 days, half-life 180d, ridge 15)
 matches scored: 850  (2024-08-16 -> 2026-11-02)
 
 model          n      RPS   logloss    Brier     acc  draw bias
-DixonColes   850   0.2054    1.0064   0.6025   49.1%      -1.8%
+DixonColes   850   0.2055    1.0066   0.6026   49.2%      -1.8%
 close odds   590   0.1972    0.9739   0.5808   53.9%      -1.2%
 
 model - market RPS: +0.0082  (positive = model worse)
-flat-stake value bets vs close (edge>=5%): 277 bets, P/L -8.83u, ROI -3.2%
+flat-stake value bets vs close (edge>=5%): 272 bets, P/L -12.62u, ROI -4.6%
 
 by season:
 season       n      RPS   mkt RPS   logloss
-2425       380   0.2010    0.1961    0.9789
-2526       380   0.2086    0.1994    1.0277
-2627        90   0.2110       nan    1.0329
+2425       380   0.2010    0.1961    0.9788
+2526       380   0.2085    0.1994    1.0276
+2627        90   0.2116       nan    1.0350
 ```
 
 The model is beaten slightly by the closing line, so a gap of a few points against the price is *not* an edge - it is the model's error. Use the 80% band, not the point estimate.

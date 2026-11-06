@@ -15,8 +15,10 @@ Rules for using the table without leakage:
 - Call `build_matches.assert_fresh()` before predicting.
 - New or misspelled team names land in `out/unmapped_teams.txt`; add them to `TEAM_ALIASES` in common.py.
 
-Coverage gaps: shots exist only for the main European leagues; the extra leagues (MLS, Brazil, Argentina...) have
-results and closing odds only; xG only for the top 5. Models need a results-and-odds-only fallback for those.
+Coverage gaps: shots exist only for the main European leagues; the extra leagues (Brazil, Argentina, Greece,
+Romania, Switzerland) have results only - no shots and no closing odds - and xG covers only the top 5. So the
+closing-line benchmark in the table below exists for 14 of the 19 leagues, and those five are scored on results
+alone.
 
 Run daily on GitHub: `.github/workflows/update.yml` (add ODDS_API_KEY as a repo secret if you want odds).
 
@@ -75,35 +77,39 @@ the benchmark to beat:
 
 | league | code | matches | RPS | log loss | accuracy | closing line RPS | gap |
 |---|---|---|---|---|---|---|---|
-| Spain La Liga | SP1 | 869 | 0.1979 | 0.975 | 52.4% | 0.1872 | +0.0106 |
-| France Ligue 1 | F1 | 693 | 0.2076 | 0.990 | 53.4% | 0.2012 | +0.0064 |
-| England Premier League | E0 | 850 | 0.2054 | 1.006 | 49.1% | 0.1972 | +0.0082 |
-| Netherlands Eredivisie | N1 | 711 | 0.2002 | 0.995 | 51.9% | 0.1850 | +0.0152 |
-| Belgium Pro League | B1 | 705 | 0.2084 | 1.012 | 49.5% | 0.1951 | +0.0133 |
-| Norway Eliteserien | NOR | 553 | 0.2054 | 0.963 | 54.8% | 0.1930 | +0.0124 |
-| Denmark Superliga | DNK | 450 | 0.2142 | 1.037 | 51.6% | 0.2017 | +0.0125 |
-| Portugal Primeira Liga | P1 | 702 | 0.1833 | 0.937 | 55.3% | 0.1759 | +0.0074 |
+| Portugal Primeira Liga | P1 | 702 | 0.1834 | 0.937 | 55.1% | 0.1759 | +0.0075 |
 | Italy Serie A | I1 | 860 | 0.1961 | 0.977 | 53.5% | 0.1873 | +0.0088 |
-| Germany Bundesliga | D1 | 684 | 0.2061 | 1.007 | 52.2% | 0.1966 | +0.0095 |
-| Scotland Premiership | SC0 | 525 | 0.2047 | 0.990 | 52.4% | 0.1999 | +0.0047 |
 | Turkey Super Lig | T1 | 738 | 0.1975 | 0.977 | 51.2% | 0.1798 | +0.0177 |
-| Sweden Allsvenskan | SWE | 693 | 0.2214 | 1.032 | 49.8% | 0.2142 | +0.0072 |
+| Spain La Liga | SP1 | 869 | 0.1979 | 0.975 | 52.4% | 0.1872 | +0.0107 |
+| Netherlands Eredivisie | N1 | 711 | 0.2002 | 0.995 | 51.9% | 0.1850 | +0.0152 |
 | Greece Super League | G1 | 360 | 0.2017 | 0.970 | 53.1% | - | no odds in source |
-| Brazil Serie A | BRA | 716 | 0.2017 | 0.999 | 51.4% | - | no odds in source |
-| Romania Liga 1 | ROU | 395 | 0.2022 | 1.018 | 48.6% | - | no odds in source |
-| Argentina Primera | ARG | 714 | 0.2116 | 1.051 | 45.7% | - | no odds in source |
-| Switzerland Super League | SWZ | 287 | 0.2188 | 1.045 | 49.8% | - | 2025-26 season missing |
+| Romania Liga 1 | ROU | 395 | 0.2021 | 1.018 | 48.6% | - | no odds in source |
+| Brazil Serie A | BRA | 910 | 0.2033 | 1.007 | 50.8% | - | no odds in source |
+| Scotland Premiership | SC0 | 525 | 0.2047 | 0.990 | 52.4% | 0.1999 | +0.0048 |
+| Norway Eliteserien | NOR | 553 | 0.2054 | 0.963 | 54.8% | 0.1930 | +0.0124 |
+| England Premier League | E0 | 850 | 0.2055 | 1.007 | 49.2% | 0.1972 | +0.0083 |
+| Germany Bundesliga | D1 | 684 | 0.2061 | 1.007 | 52.2% | 0.1966 | +0.0095 |
+| France Ligue 1 | F1 | 693 | 0.2076 | 0.990 | 53.4% | 0.2012 | +0.0064 |
+| Belgium Pro League | B1 | 705 | 0.2084 | 1.012 | 49.5% | 0.1951 | +0.0133 |
+| Argentina Primera | ARG | 982 | 0.2116 | 1.059 | 44.7% | - | no odds in source |
+| Denmark Superliga | DNK | 450 | 0.2142 | 1.037 | 51.6% | 0.2017 | +0.0125 |
+| Sweden Allsvenskan | SWE | 567 | 0.2155 | 1.031 | 48.5% | 0.2073 | +0.0082 |
+| Switzerland Super League | SWZ | 287 | 0.2188 | 1.045 | 49.8% | - | no odds in source |
+| England Championship | E1 | 1272 | 0.2193 | 1.057 | 45.3% | 0.2116 | +0.0077 |
 
 Read the last column honestly: the model loses to the closing line everywhere, by 0.005 to
 0.018 RPS. That is the expected result for a goals-only model and it is why `predict.py`
 prints an 80% band instead of a confident single number. Turkey is the weakest with odds
 (+0.0177, and flat-staking its disagreements loses 29%) - treat a 5-point edge there as noise.
-Argentina and Switzerland have no odds in their source; Argentina's zonal season format and a
-missing Swiss season make their numbers the least reliable of the set.
+Argentina, Brazil, Greece, Romania and Switzerland have no odds in their source, so there is no
+benchmark for them at all - and Argentina (44.7% accuracy) is the one league where the model is
+visibly poor, because its season is split into zonal tournaments the goals-only fit does not
+understand. Allsvenskan runs on a calendar year, so a 2024-08 start begins mid-season.
 
 Home advantage is estimated per league rather than assumed, and it varies a lot: Netherlands
-x1.12, England x1.21, Brazil x1.40, Greece x1.47, Romania x1.48 (in Elo points, 25 to 79). Assuming a single European
-home edge would misprice every one of those leagues.
+x1.12, England x1.21, Brazil x1.40, Greece x1.47, Romania x1.48 - or, in the Elo units the
+cross-league module uses, 25 to 79 points. Assuming a single European home edge would misprice
+every one of those leagues.
 
 Fallback-source gaps worth knowing: Greece, Switzerland and Romania come from openfootball
 plus open-matchday instead of football-data.co.uk, so they have no closing odds (no market
