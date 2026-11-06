@@ -1,0 +1,7 @@
+# generated data and artefacts (rebuild with `python update_all.py`)
+raw/
+out/
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
