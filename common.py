@@ -165,7 +165,7 @@ TEAM_ALIASES = {
     "RWD Molenbeek": ["Molenbeek"], "Seraing": ["RFC Seraing"],
     "Sint-Truiden": ["Sint-Truidense", "St Truiden", "St. Truiden"],
     "St. Gilloise": ["Union St.-Gilloise", "Union Saint-Gilloise", "Union SG"],
-    "Standard": ["Standard Liege", "Standard Liège"], "Waasland-Beveren": ["Beveren"],
+    "Standard": ["Standard Liege", "St. Liege", "St Liege", "Standard Liège"], "Waasland-Beveren": ["Beveren"],
     "Zulte-Waregem": ["Waregem"],
     # Denmark
     "Aalborg": ["Aalborg BK", "AaB"], "Aarhus": ["AGF", "AGF Aarhus"], "Brondby": ["Brøndby"],

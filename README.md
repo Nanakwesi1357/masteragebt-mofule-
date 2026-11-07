@@ -127,6 +127,28 @@ not know: line-ups and injuries, cup/Europe fatigue, manager changes, transfers 
 and it deliberately ignores a promoted club's second-tier record (tested: blending in
 shot-on-target-derived goals made RPS worse, 0.208 -> 0.220, so it is not enabled).
 
+### Live scores: what a scoreline does to a forecast
+
+`predict.py` prices a match that has not started. Once it is under way, the pre-match numbers are
+dead and pretending otherwise is the easiest way to lose money. `inplay.py` does the only honest
+thing available: it takes the fitted full-match rates, weights them by the share of a match's
+goals still to come, and adds the remaining goals to the current score.
+
+```
+python inplay.py --league B1 --home Standard --away Waasland-Beveren --date 2026-11-06 \
+                 --minute 67 --score 2 0 --odds 1.96 3.71 3.82
+```
+
+At 2-0 in the 67th minute, with a pre-match fit of 1.84-1.12 expected goals, that is
+**97.4% / 2.4% / 0.3%** (fair 1.03 / 42.2 / 364.8) - and therefore the quoted 1.96 is not a live
+price for the leader, it is a pre-match snapshot left on the screen. The assumption check moves
+the home number between 96.7% and 98.0% for second-half goal shares of 0.65 and 0.45.
+
+This is arithmetic, **not a calibrated in-play model**: `out/matches.csv` has no goal minutes, so
+there is nothing to fit or validate a minute-level model against, and the second-half share and
+stoppage-time allowance are assumptions. It also cannot see red cards, substitutions, or a side
+sitting on a lead. Use it to sanity-check a live screen, never as fair odds to bet against.
+
 ### Data fallback
 
 `fetch_data.py` is the primary source. If football-data.co.uk is unreachable, the current
