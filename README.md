@@ -61,6 +61,15 @@ python predict.py --home Palmeiras --away Remo --league BRA --odds 1.24 6.48 12.
 python predict.py --home "Gimnasia L.P." --away Belgrano --league ARG --odds 2.77 3.07 2.74
 ```
 
+Names are canonicalised before anything else runs, so the spelling on the screenshot is fine
+as input: `predict.py` prints the resolution (`names: Leuven v KV Mechelen -> OH Leuven v
+Mechelen`) and the fixture lookup, league table and recent-results block all use the
+canonical form. A side with no history in the window is priced from the promotion prior **and
+says so** on the xG line - it is never quietly scored as an average club. In the 07.11.2026
+Belgian board that mattered for two fixtures: before this, `Leuven` and `Cercle Brugge KSV`
+were unknown to the fit and both sides came out of the promotion prior instead of their own
+records (232 and 283 finished matches waiting behind those spellings).
+
 ### How good is it?
 
 `python backtest.py --league E0` refits every 14 days and scores the out-of-sample matches:

@@ -24,7 +24,7 @@ import numpy as np
 import pandas as pd
 
 import build_matches
-from common import OUT
+from common import OUT, canon
 from dc_model import DixonColes, devig, load_league
 
 
@@ -90,6 +90,14 @@ def main():
     ap.add_argument("--report", default=None, help="write a markdown report to this path")
     a = ap.parse_args()
 
+    # Resolve Flashscore-style names once, up front: the fixture lookup, the league table and
+    # the recent-results block all index matches.csv by canonical name, so "Leuven" has to
+    # become "OH Leuven" before any of them run or the report claims a gap that isn't there.
+    raw = (a.home, a.away)
+    a.home, a.away = canon(a.home, a.league), canon(a.away, a.league)
+    if (a.home, a.away) != raw:
+        print(f"names: {raw[0]} v {raw[1]} -> {a.home} v {a.away}")
+
     try:
         last = build_matches.assert_fresh()
     except RuntimeError as e:
@@ -136,8 +144,9 @@ def main():
     L.append(f"{a.home} v {a.away}  [{league_name}]  {kick}")
     L.append(f"model fitted on {model.n_matches} matches up to {model.as_of.date()} "
              f"({len(model.teams)} teams, half-life {a.half_life:.0f}d)")
+    unknown = [t for t in (a.home, a.away) if t not in model.teams]
     L.append(f"expected goals: {a.home} {p['lambda']:.2f} - {p['mu']:.2f} {a.away}"
-             + ("   (no history for one side: promotion prior used)" if len(model.teams) < 2 else ""))
+             + (f"   (no history for {', '.join(unknown)}: promotion prior used, not form)" if unknown else ""))
     L.append("")
     head = f"{'':<8}{'model':>8}{'fair':>9}" + (f"{'mkt prob':>10}{'odds':>8}{'edge':>8}{'EV/1u':>9}{'kelly':>8}" if mkt is not None else "")
     L.append(head)

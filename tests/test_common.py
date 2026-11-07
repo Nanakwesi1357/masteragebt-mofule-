@@ -76,6 +76,20 @@ class TestMerges(unittest.TestCase):
         for alias, expected in pairs.items():
             self.assertEqual(canon(alias), expected, alias)
 
+    def test_flashscore_spellings_resolve(self):
+        # the 07.11.2026 Jupiler board arrives spelled like this; two of these used to fall
+        # through to the promotion prior inside predict.py, which priced them as league-average
+        # clubs instead of refusing
+        board = {
+            "Leuven": "OH Leuven", "Oud-Heverlee Leuven": "OH Leuven", "OHL": "OH Leuven",
+            "KV Mechelen": "Mechelen", "Cercle Brugge KSV": "Cercle Brugge",
+            "Lommel": "Lommel SK", "RAAL La Louviere": "RAAL La Louviere",
+            "Westerlo": "Westerlo", "Charleroi": "Charleroi", "Antwerp": "Antwerp",
+        }
+        for alias, expected in board.items():
+            self.assertEqual(canon(alias, league="B1"), expected, alias)
+        self.assertEqual(canon("Leuven"), "OH Leuven")
+
     def test_distinct_clubs_stay_distinct(self):
         distinct = [("Dundee", "Dundee United"), ("Borussia Dortmund", "Borussia Monchengladbach"),
                     ("Inter Milan", "AC Milan")]
